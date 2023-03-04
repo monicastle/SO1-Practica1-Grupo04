@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/"/>
+    <qresource prefix="/n">
+        <file>Imagenes/Escritor.png</file>
+    </qresource>
+</RCC>
