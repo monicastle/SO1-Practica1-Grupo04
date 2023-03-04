@@ -53,9 +53,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../Lector/main.cpp \
-		../Lector/lector.cpp moc_lector.cpp
+		../Lector/lector.cpp qrc_Lector.cpp \
+		moc_lector.cpp
 OBJECTS       = main.o \
 		lector.o \
+		qrc_Lector.o \
 		moc_lector.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -114,6 +116,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		../Lector/.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -204,6 +207,7 @@ Makefile: ../Lector/Lector.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/q
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -224,7 +228,8 @@ Makefile: ../Lector/Lector.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/q
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../Lector/Lector.pro
+		../Lector/Lector.pro \
+		../Lector/Lector.qrc
 	$(QMAKE) -o Makefile ../Lector/Lector.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf:
@@ -283,6 +288,7 @@ Makefile: ../Lector/Lector.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/q
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -304,6 +310,7 @@ Makefile: ../Lector/Lector.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/q
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf:
 ../Lector/Lector.pro:
+../Lector/Lector.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../Lector/Lector.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 
@@ -318,6 +325,7 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
+	$(COPY_FILE) --parents ../Lector/Lector.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Lector/lector.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../Lector/main.cpp ../Lector/lector.cpp $(DISTDIR)/
@@ -345,8 +353,14 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_Lector.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) qrc_Lector.cpp
+qrc_Lector.cpp: ../Lector/Lector.qrc \
+		/usr/lib/qt5/bin/rcc \
+		../Lector/Imagenes/Lector.png
+	/usr/lib/qt5/bin/rcc -name Lector ../Lector/Lector.qrc -o qrc_Lector.cpp
+
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
@@ -378,7 +392,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
@@ -388,6 +402,9 @@ main.o: ../Lector/main.cpp ../Lector/lector.h
 lector.o: ../Lector/lector.cpp ../Lector/lector.h \
 		ui_lector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lector.o ../Lector/lector.cpp
+
+qrc_Lector.o: qrc_Lector.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_Lector.o qrc_Lector.cpp
 
 moc_lector.o: moc_lector.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_lector.o moc_lector.cpp

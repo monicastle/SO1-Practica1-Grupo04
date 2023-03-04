@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Imagenes/Lector.png</file>
+    </qresource>
+</RCC>
