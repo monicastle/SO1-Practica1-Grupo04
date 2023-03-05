@@ -4,6 +4,9 @@
 #include <QDataStream>
 #include <QDebug>
 #include  <QMessageBox>
+#include <iostream>
+using namespace std;
+
 // Especie de clase para un Empleado
 struct empleado_tipo {
     int id;
@@ -45,26 +48,7 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 
-void Escritor::on_btn_id_clicked()
-{
-    QMessageBox::information(this, "Informacion","Crear nuevo id");
+
+void hola  (void){
+    cout <<"Hello word"<<endl;
 }
-
-
-void Escritor::on_btn_mod_clicked()
-{
-    QMessageBox::information(this, "Informacion","Modificar");
-}
-
-
-void Escritor::on_btn_eliminar_clicked()
-{
-    QMessageBox::information(this, "Informacion","Eliminar");
-}
-
-void Escritor::on_btn_buscar_clicked()
-{
-    QMessageBox::information(this, "Informacion","Buscar");
-}
-
-
