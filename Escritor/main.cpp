@@ -6,7 +6,7 @@
 #include  <QMessageBox>
 #include <iostream>
 using namespace std;
-
+int num= 1;
 // Especie de clase para un Empleado
 struct empleado_tipo {
     int id;
@@ -49,6 +49,28 @@ int main(int argc, char *argv[])
 }
 
 
-void hola  (void){
-    cout <<"Hello word"<<endl;
+string generarEmpleados (){
+    string nombres;
+    if(num  ==  1){
+        string nombresA[] = {"Skarleth", "Ana", "Bessy", "Maria", "Claudia", "Daniela", "Sofia", "Elena", "Lucia", "Fatima", "Sahory", "Monica", "Grabriela", "Helen", "Indira", "Karla", "Carmen", "Vanesa", "Laura", "Merlina", "Valeria", "Jimena", "Eva", "Paula", "Paola", "Danna", "Zoe", "Belinda", "Anahi", "Isabella" };
+        string apellidos[] = {"Cano", "Herrera", "Castillo", "Mendoza", "Meraz", "Duarte", "Hernandez", "Fernandez", "Rodriguez", "Murillo", "Aguilar", "Gonsalez", "Lainez", "Cruz", "Flores", "Zepeda", "Castellano", "Lopez", "Solorzano", "Navarro", "Rivera", "Garcia", "Ramirez", "Matamoros", "Perez", "Sosa", "Torres", "Diaz", "Ortiz", "Gutierrez" };
+        srand(time(0));
+        int indice = rand() % 30;
+        int indice1 = rand() % 30;
+        int indice2 = rand() % 30;
+        int indice3 = rand() % 30;
+        nombres = nombresA[indice] + " " + nombresA[indice1] + " " + apellidos[indice2] + " " + apellidos[indice3];
+        num = 2;
+    }else{
+        string nombresA[] = {"Juan", "Ariel", "Pedro", "Bernardo", "Jose", "Luis", "Cesar", "Carlos", "Daniel", "Miguel", "Elvin", "Fabricio", "Jesus", "Mario", "Carlos", "Josue", "Gabriel", "Hector", "Adrian", "Andres", "Ivan", "Jonathan", "Oscar", "Ruben", "Denis", "Omar", "Angel", "Noah", "Alessio", "Santiago" };
+        string apellidos[] = {"Cano", "Herrera", "Castillo", "Mendoza", "Meraz", "Duarte", "Hernandez", "Fernandez", "Rodriguez", "Murillo", "Aguilar", "Gonsalez", "Lainez", "Cruz", "Flores", "Zepeda", "Castellano", "Lopez", "Solorzano", "Navarro", "Rivera", "Garcia", "Ramirez", "Matamoros", "Perez", "Sosa", "Torres", "Diaz", "Ortiz", "Gutierrez" };
+        srand(time(0));
+        int indice = rand() % 30;
+        int indice1 = rand() % 30;
+        int indice2 = rand() % 30;
+        int indice3 = rand() % 30;
+        nombres = nombresA[indice] + " " + nombresA[indice1] + " " + apellidos[indice2] + " " + apellidos[indice3];
+        num = 1;
+    }
+    return nombres;
 }

@@ -2,7 +2,10 @@
 #include "ui_escritor.h"
 #include  <qstring.h>
 #include  <QMessageBox>
-
+#include <string>
+#include <cstring>
+#include <iostream>
+using namespace std;
 
 
 Escritor::Escritor(QWidget *parent)
@@ -18,13 +21,14 @@ Escritor::~Escritor()
     delete ui;
 }
 
-void hola  (void);
+ string generarEmpleados ();
 
 void Escritor::on_btn_id_clicked()
 {
+    string nombre = generarEmpleados ();
     QMessageBox::information(this, "Informacion","Crear nuevo id");
     //aqui  deberia de llamar el metodo que crea un nuevo empleado
-    hola();
+       cout<<generarEmpleados ()<<endl;
 }
 
 
