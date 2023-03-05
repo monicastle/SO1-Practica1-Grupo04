@@ -21,14 +21,13 @@ Escritor::~Escritor()
     delete ui;
 }
 
- string generarEmpleados ();
+ string Empleados ();
 
 void Escritor::on_btn_id_clicked()
 {
-    string nombre = generarEmpleados ();
-    QMessageBox::information(this, "Informacion","Crear nuevo id");
+      QMessageBox::information(this, "Informacion","Crear nuevo id");
     //aqui  deberia de llamar el metodo que crea un nuevo empleado
-       cout<<generarEmpleados ()<<endl;
+       cout<<Empleados ()<<endl;
 }
 
 
