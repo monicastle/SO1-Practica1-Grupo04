@@ -23,13 +23,14 @@ public:
     ~Escritor();
 
 private slots:
-    void on_btn_buscar_clicked();
 
-    void on_btn_nuevoid_clicked();
+    void on_btn_id_clicked();
 
     void on_btn_mod_clicked();
 
     void on_btn_eliminar_clicked();
+
+    void on_btn_buscar_clicked();
 
 private:
     Ui::Escritor *ui;

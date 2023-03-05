@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
@@ -27,12 +28,12 @@ class Ui_Escritor
 public:
     QWidget *centralwidget;
     QLabel *label;
-    QLineEdit *lineEdit;
-    QLineEdit *lineEdit_2;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_3;
-    QPushButton *pushButton_4;
+    QLineEdit *txt_id;
+    QPushButton *btn_buscar;
+    QPushButton *btn_mod;
+    QPushButton *btn_eliminar;
+    QDoubleSpinBox *sdp_sueldo;
+    QPushButton *btn_id;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -48,29 +49,29 @@ public:
         label->setGeometry(QRect(0, -10, 611, 431));
         label->setPixmap(QPixmap(QString::fromUtf8(":/Imagenes/Escritor.png")));
         label->setScaledContents(true);
-        lineEdit = new QLineEdit(centralwidget);
-        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setGeometry(QRect(390, 80, 151, 21));
-        lineEdit_2 = new QLineEdit(centralwidget);
-        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
-        lineEdit_2->setGeometry(QRect(390, 120, 151, 21));
-        pushButton = new QPushButton(centralwidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(550, 70, 41, 31));
-        pushButton->setStyleSheet(QString::fromUtf8("border: none;"));
+        txt_id = new QLineEdit(centralwidget);
+        txt_id->setObjectName(QString::fromUtf8("txt_id"));
+        txt_id->setGeometry(QRect(390, 80, 151, 21));
+        btn_buscar = new QPushButton(centralwidget);
+        btn_buscar->setObjectName(QString::fromUtf8("btn_buscar"));
+        btn_buscar->setGeometry(QRect(550, 70, 41, 31));
+        btn_buscar->setStyleSheet(QString::fromUtf8("border: none;"));
         QIcon icon;
         icon.addFile(QString::fromUtf8("../../../../Descargas/buscar(1).png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton->setIcon(icon);
-        pushButton->setIconSize(QSize(30, 30));
-        pushButton_2 = new QPushButton(centralwidget);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(320, 200, 131, 25));
-        pushButton_3 = new QPushButton(centralwidget);
-        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
-        pushButton_3->setGeometry(QRect(470, 200, 131, 25));
-        pushButton_4 = new QPushButton(centralwidget);
-        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
-        pushButton_4->setGeometry(QRect(400, 250, 131, 25));
+        btn_buscar->setIcon(icon);
+        btn_buscar->setIconSize(QSize(30, 30));
+        btn_mod = new QPushButton(centralwidget);
+        btn_mod->setObjectName(QString::fromUtf8("btn_mod"));
+        btn_mod->setGeometry(QRect(470, 200, 131, 25));
+        btn_eliminar = new QPushButton(centralwidget);
+        btn_eliminar->setObjectName(QString::fromUtf8("btn_eliminar"));
+        btn_eliminar->setGeometry(QRect(400, 250, 131, 25));
+        sdp_sueldo = new QDoubleSpinBox(centralwidget);
+        sdp_sueldo->setObjectName(QString::fromUtf8("sdp_sueldo"));
+        sdp_sueldo->setGeometry(QRect(390, 120, 151, 26));
+        btn_id = new QPushButton(centralwidget);
+        btn_id->setObjectName(QString::fromUtf8("btn_id"));
+        btn_id->setGeometry(QRect(330, 200, 121, 25));
         Escritor->setCentralWidget(centralwidget);
         menubar = new QMenuBar(Escritor);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -89,10 +90,10 @@ public:
     {
         Escritor->setWindowTitle(QCoreApplication::translate("Escritor", "Escritor", nullptr));
         label->setText(QString());
-        pushButton->setText(QString());
-        pushButton_2->setText(QCoreApplication::translate("Escritor", "Generar nuevo ID", nullptr));
-        pushButton_3->setText(QCoreApplication::translate("Escritor", "Modificar", nullptr));
-        pushButton_4->setText(QCoreApplication::translate("Escritor", "Eliminar", nullptr));
+        btn_buscar->setText(QString());
+        btn_mod->setText(QCoreApplication::translate("Escritor", "Modificar", nullptr));
+        btn_eliminar->setText(QCoreApplication::translate("Escritor", "Eliminar", nullptr));
+        btn_id->setText(QCoreApplication::translate("Escritor", "Crear Nuevo ID", nullptr));
     } // retranslateUi
 
 };

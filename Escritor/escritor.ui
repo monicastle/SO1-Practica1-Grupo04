@@ -69,19 +69,6 @@
      </size>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_nuevoid">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>200</y>
-      <width>131</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Generar nuevo ID</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btn_mod">
     <property name="geometry">
      <rect>
@@ -116,6 +103,19 @@
       <width>151</width>
       <height>26</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_id">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>200</y>
+      <width>121</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Crear Nuevo ID</string>
     </property>
    </widget>
   </widget>
