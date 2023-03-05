@@ -33,7 +33,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="txt_id">
     <property name="geometry">
      <rect>
       <x>390</x>
@@ -43,17 +43,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
-    <property name="geometry">
-     <rect>
-      <x>390</x>
-      <y>120</y>
-      <width>151</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btn_buscar">
     <property name="geometry">
      <rect>
       <x>550</x>
@@ -79,7 +69,7 @@
      </size>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="btn_nuevoid">
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -92,7 +82,7 @@
      <string>Generar nuevo ID</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="btn_mod">
     <property name="geometry">
      <rect>
       <x>470</x>
@@ -105,7 +95,7 @@
      <string>Modificar</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="btn_eliminar">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -116,6 +106,16 @@
     </property>
     <property name="text">
      <string>Eliminar</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="sdp_sueldo">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>120</y>
+      <width>151</width>
+      <height>26</height>
+     </rect>
     </property>
    </widget>
   </widget>

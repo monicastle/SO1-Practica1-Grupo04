@@ -15,6 +15,13 @@ public:
     Lector(QWidget *parent = nullptr);
     ~Lector();
 
+private slots:
+    void on_btn_busq_edad_clicked();
+
+    void on_btn_busq_nombre_clicked();
+
+    void on_btn_calcular_clicked();
+
 private:
     Ui::Lector *ui;
 };

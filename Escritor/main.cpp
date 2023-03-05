@@ -21,6 +21,7 @@ struct Segmento {
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setStyle("fusion");//estilo de ventana
     Escritor w;
     w.show();
 
