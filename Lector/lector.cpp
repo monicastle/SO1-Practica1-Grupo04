@@ -13,7 +13,9 @@
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
+
 using namespace std;
+
 Lector::Lector(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Lector)
@@ -96,7 +98,6 @@ void Lector::on_btn_busq_edad_clicked()
 
         }
     }
-
 }
 
 
@@ -122,10 +123,6 @@ void Lector::on_btn_busq_nombre_clicked()
             }
         }
     }
-
-
-
-
 }
 
 
@@ -142,7 +139,6 @@ void Lector::on_btn_calcular_clicked()
             }
 
             ui->txt_total->setText(QString::number(totalSueldos));
-
 }
 
 

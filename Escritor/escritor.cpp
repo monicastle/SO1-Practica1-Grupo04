@@ -76,7 +76,9 @@ void Escritor::on_btn_id_clicked()
     qDebug() << "TAM INICIAL ARREGLO: " << segment->numEmpleados_Arreglo;
 
     bool existeEmpleado = false;
-    for (int i = 0; i <= segment->numEmpleados_Arreglo; i++){
+    bool hayPosLibre = false;
+
+    for (int i = 0; i <= segment->numMax_Empleados; i++){
         if(segment->empleados[i].id == empleadoAgregar.id){
             existeEmpleado = true;
             break;
@@ -85,12 +87,33 @@ void Escritor::on_btn_id_clicked()
 
     if(!existeEmpleado){
         if(segment->numEmpleados_Arreglo < 1000){
-            qDebug() << "NO ENTRA ESTA VAINA";
-            segment->numEmpleados_Arreglo++;
-            segment->empleados[segment->numEmpleados_Arreglo] = empleadoAgregar;
+            for (int i = 0; i < segment->numMax_Empleados; i++){
+                if(segment->empleados[i].id == -1){
+                    segment->empleados[segment->numEmpleados_Arreglo] = empleadoAgregar;
+                    segment->numEmpleados_Arreglo++;
+                    QMessageBox::information(this, "EXITO","¡Se ha creado un nuevo empleado exitosamente!");
+                    qDebug() << "tam arreglo: " << segment->numEmpleados_Arreglo;
+                    qDebug() << "ID: " << segment->empleados[segment->numEmpleados_Arreglo].id;
+                    qDebug() << "NAME: " << segment->empleados[segment->numEmpleados_Arreglo].nombreCompleto;
+                    qDebug() << "SUELDO: " << segment->empleados[segment->numEmpleados_Arreglo].sueldo;
+                    qDebug() << "EDAD: " << segment->empleados[segment->numEmpleados_Arreglo].edad;
+                    hayPosLibre = true;
+                    break;
+                }
+            }
 
-            QMessageBox::information(this, "EXITO","¡Se ha creado un nuevo empleado exitosamente!");
-            qDebug() << "tam arreglo: " << segment->numEmpleados_Arreglo;
+            if(!hayPosLibre){
+                segment->numEmpleados_Arreglo++;
+                segment->empleados[segment->numEmpleados_Arreglo] = empleadoAgregar;
+
+                QMessageBox::information(this, "EXITO","¡Se ha creado un nuevo empleado exitosamente!");
+                qDebug() << "tam arreglo: " << segment->numEmpleados_Arreglo;
+                qDebug() << "ID: " << segment->empleados[segment->numEmpleados_Arreglo].id;
+                qDebug() << "NAME: " << segment->empleados[segment->numEmpleados_Arreglo].nombreCompleto;
+                qDebug() << "SUELDO: " << segment->empleados[segment->numEmpleados_Arreglo].sueldo;
+                qDebug() << "EDAD: " << segment->empleados[segment->numEmpleados_Arreglo].edad;
+            }
+
         } else {
             QMessageBox::information(this, "ERROR","Se ha llegado al maximo de empleados");
         }
@@ -103,22 +126,28 @@ void Escritor::on_btn_id_clicked()
 
 void Escritor::on_btn_mod_clicked()
 {
+    sem_wait(&segment->mutex);
     bool existe = false;
 
     QString id_usuario =ui->txt_id->text();
-    for (int i = 0; i < sizeof(segment->empleados); i++){
-        if(segment->empleados[i].id == id_usuario){
-            existe = true;
-            QString sueldo_empleado =ui->sdp_sueldo ->text();
-            segment->empleados[i].sueldo = sueldo_empleado.toFloat();
-            QMessageBox::information(this, "EXITO","¡Se ha modificado al empleado exitosamente!");
+    if(id_usuario.toInt() >=  1){
+        for (int i = 0; i < segment->numMax_Empleados; i++){
+            if(segment->empleados[i].id == id_usuario.toInt()){
+                existe = true;
+                QString sueldo_empleado =ui->sdp_sueldo ->text();
+                segment->empleados[i].sueldo = sueldo_empleado.toFloat();
+                qDebug() << "SUELDO NUEVO: " << segment->empleados[i].sueldo;
+                QMessageBox::information(this, "EXITO","¡Se ha modificado al empleado exitosamente!");
+            }
         }
-    }
 
-    if(existe == false){
-        QMessageBox::information(this, "ERROR","No se pudo modificar al empleado ya que el ID ingresado no existe");
+        if(existe == false){
+            QMessageBox::information(this, "ERROR","No se pudo modificar al empleado ya que el ID ingresado no existe");
+        }
+    } else {
+        QMessageBox::information(this, "ERROR","El ID ingresado no es valido");
     }
-    shmdt(segment);
+    sem_post(&segment->mutex);
 }
 
 
@@ -127,12 +156,13 @@ void Escritor::on_btn_eliminar_clicked()
     bool existe = false;
 
     QString id_usuario =ui->txt_id->text();
-    for (int i = 0; i < sizeof(segment->empleados); i++){
-        if(segment->empleados[i].id == id_usuario){
+    for (int i = 0; i < segment->numEmpleados_Arreglo; i++){
+        if(segment->empleados[i].id == id_usuario.toInt()){
             existe = true;
-            //segment->empleados.erase(segment->empleados.begin() + i);
-            //segment->numEmpleados_Arreglo = segment->empleados.size();
+            segment->empleados[i].id = -1;
+            segment->numEmpleados_Arreglo--;
             QMessageBox::information(this, "EXITO","¡Se ha eliminado al empleado exitosamente!");
+            qDebug() << "tam arreglo: " << segment->numEmpleados_Arreglo;
         }
     }
 
