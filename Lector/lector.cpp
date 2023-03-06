@@ -32,6 +32,8 @@ Lector::Lector(QWidget *parent)
    ui->tableWidget->setColumnWidth(2,160);
    ui->tableWidget->setColumnWidth(3,100);
 
+   ui->tableWidget->clearContents();
+   ui->tableWidget->setRowCount(0);
 
    qDebug() << "PARTE 1 LA CORRE  ";
 
@@ -120,6 +122,10 @@ void Lector::on_btn_busq_edad_clicked()
     if(!rangoEdadesFound){
         QMessageBox::information(this, "ERROR","No hay ninguna edad que coincida con el rango de edades");
     }
+
+    ui->spb_min->setValue(0);
+    ui->spb_max->setValue(0);
+    ui->txt_total->setText("");
 }
 
 
@@ -153,6 +159,8 @@ void Lector::on_btn_busq_nombre_clicked()
     if(!nameFound){
         QMessageBox::information(this, "ERROR","No hay ningun nombre que coincida con la busqueda");
     }
+    ui->txt_nombre->setText("");
+    ui->txt_total->setText("");
 }
 
 
@@ -185,14 +193,10 @@ void Lector::on_pushButton_clicked()
             // Update the table widget with the new data
             ui->tableWidget->clearContents();
             ui->tableWidget->setRowCount(0);
-            qDebug() << "YO ENTRO al for ";
-            qDebug() << "N TOTAL:  " << segment->nTotal;
             for (int i = 0; i < segment->nTotal; i++)
             {
-                qDebug() << "YO ENTRO al for ";
                 if(segment->empleados[i].id >= 1){
                     // Update the table widget with the new data
-                    qDebug() << "entro al if  ";
                     int fila;
                     ui->tableWidget->insertRow(ui->tableWidget->rowCount());
                     fila=ui->tableWidget->rowCount() - 1;
@@ -202,6 +206,7 @@ void Lector::on_pushButton_clicked()
                     ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(QString::number(segment->empleados[i].edad)));
                 }
             }
+        ui->txt_total->setText("");
         /*sem_wait(&segment->sem_Lector);
         segment->nLector--;
 
