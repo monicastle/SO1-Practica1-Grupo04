@@ -59,10 +59,8 @@ Lector::Lector(QWidget *parent)
 
   for (int i = 0; i < segment->nTotal; i++)
   {
-      qDebug() << "YO ENTRO al for ";
       if(segment->empleados[i].id >= 1){
           // Update the table widget with the new data
-          qDebug() << "entro al if  ";
           int fila;
           ui->tableWidget->insertRow(ui->tableWidget->rowCount());
           fila=ui->tableWidget->rowCount() - 1;
@@ -103,17 +101,24 @@ void Lector::on_btn_busq_edad_clicked()
     int edad_min = ui->spb_min->value(); // Valor mínimo de edad
     int edad_max = ui->spb_max->value(); // Valor máximo de edad
 
-    for (int i = 0; i < segment->numEmpleados_Arreglo; i++) {
-        if (segment->empleados[i].edad >= edad_min && segment->empleados[i].edad <= edad_max) {
-            int fila;
-            ui->tableWidget->insertRow(ui->tableWidget->rowCount());
-            fila=ui->tableWidget->rowCount() - 1;
-            ui->tableWidget->setItem(fila, ID, new QTableWidgetItem(segment->empleados[i].id));
-            ui->tableWidget->setItem(fila, NOMBRE, new QTableWidgetItem(segment->empleados[i].nombreCompleto));
-            ui->tableWidget->setItem(fila, SALARIO, new QTableWidgetItem(segment->empleados[i].sueldo));
-            ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(segment->empleados[i].edad));
+    bool rangoEdadesFound = false;
 
+    for (int i = 0; i < segment->nTotal; i++) {
+        if(segment->empleados[i].id >= 1){
+            if (segment->empleados[i].edad >= edad_min && segment->empleados[i].edad <= edad_max) {
+                int fila;
+                ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+                fila=ui->tableWidget->rowCount() - 1;
+                ui->tableWidget->setItem(fila, ID, new QTableWidgetItem(QString::number(segment->empleados[i].id)));
+                ui->tableWidget->setItem(fila, NOMBRE, new QTableWidgetItem(segment->empleados[i].nombreCompleto));
+                ui->tableWidget->setItem(fila, SALARIO, new QTableWidgetItem(QString::number(segment->empleados[i].sueldo)));
+                ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(QString::number(segment->empleados[i].edad)));
+                rangoEdadesFound = true;
+            }
         }
+    }
+    if(!rangoEdadesFound){
+        QMessageBox::information(this, "ERROR","No hay ninguna edad que coincida con el rango de edades");
     }
 }
 
@@ -126,37 +131,43 @@ void Lector::on_btn_busq_nombre_clicked()
     QString nombre = ui->txt_nombre->text(); // Obtener el nombre de la entrada de texto
     QStringList palabras = nombre.split(" "); // Dividir el nombre en palabras separadas por espacios
 
-    for (int i = 0; i < segment->numEmpleados_Arreglo; i++) {
+    bool nameFound = false;
+
+    for (int i = 0; i < segment->nTotal; i++) {
         for (int j = 0; j < palabras.size(); j++) {
-            if (QString(segment->empleados[i].nombreCompleto).contains(palabras[j], Qt::CaseInsensitive)) {
-                int fila;
-                ui->tableWidget->insertRow(ui->tableWidget->rowCount());
-                fila=ui->tableWidget->rowCount() - 1;
-                ui->tableWidget->setItem(fila, ID, new QTableWidgetItem(segment->empleados[i].id));
-                ui->tableWidget->setItem(fila, NOMBRE, new QTableWidgetItem(segment->empleados[i].nombreCompleto));
-                ui->tableWidget->setItem(fila, SALARIO, new QTableWidgetItem(segment->empleados[i].sueldo));
-                ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(segment->empleados[i].edad));
+            if(segment->empleados[i].id >= 1){
+                if (QString(segment->empleados[i].nombreCompleto).contains(palabras[j], Qt::CaseInsensitive)) {
+                    int fila;
+                    ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+                    fila=ui->tableWidget->rowCount() - 1;
+                    ui->tableWidget->setItem(fila, ID, new QTableWidgetItem(QString::number(segment->empleados[i].id)));
+                    ui->tableWidget->setItem(fila, NOMBRE, new QTableWidgetItem(segment->empleados[i].nombreCompleto));
+                    ui->tableWidget->setItem(fila, SALARIO, new QTableWidgetItem(QString::number(segment->empleados[i].sueldo)));
+                    ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(QString::number(segment->empleados[i].edad)));
+                    nameFound = true;
+                }
             }
         }
+    }
+
+    if(!nameFound){
+        QMessageBox::information(this, "ERROR","No hay ningun nombre que coincida con la busqueda");
     }
 }
 
 
 void Lector::on_btn_calcular_clicked()
 {
-            // Get a pointer to the data in the shared memory
-
-            // Resize the table widget to match the new data
-
             float totalSueldos = 0.0f;
 
-            for (int i = 0; i < segment->numEmpleados_Arreglo; i++) {
-                totalSueldos += segment->empleados[i].sueldo;
+            for (int i = 0; i < segment->nTotal; i++) {
+                if(segment->empleados[i].id >= 1){
+                    totalSueldos += segment->empleados[i].sueldo;
+                }
             }
 
             ui->txt_total->setText(QString::number(totalSueldos));
 }
-
 
 
 void Lector::on_pushButton_clicked()
