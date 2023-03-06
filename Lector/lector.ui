@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Lector</class>
  <widget class="QMainWindow" name="Lector">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -79,8 +82,8 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset>
-      <normaloff>../../../../Descargas/buscar.png</normaloff>../../../../Descargas/buscar.png</iconset>
+     <iconset resource="Imagenes/Imagenes_form.qrc">
+      <normaloff>:/buscar.png</normaloff>:/buscar.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -105,8 +108,8 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset>
-      <normaloff>../../../../Descargas/buscar.png</normaloff>../../../../Descargas/buscar.png</iconset>
+     <iconset resource="Imagenes/Imagenes_form.qrc">
+      <normaloff>:/buscar.png</normaloff>:/buscar.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -126,6 +129,9 @@
     </property>
    </widget>
    <widget class="QLineEdit" name="txt_total">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>290</x>

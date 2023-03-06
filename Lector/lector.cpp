@@ -57,7 +57,7 @@ Lector::Lector(QWidget *parent)
   //sem_init(&segment->sem_Lector, 1, 1);
   qDebug() << "PARTE 5 LA CORRE ";
 
-  for (int i = 0; i < segment->nTotal + 1; i++)
+  for (int i = 0; i < segment->nTotal; i++)
   {
       qDebug() << "YO ENTRO al for ";
       if(segment->empleados[i].id >= 1){
@@ -97,8 +97,8 @@ Lector::~Lector()
 
 void Lector::on_btn_busq_edad_clicked()
 {
-    //QString valor_min = QString::number(ui->spb_min->value());//guardar valor min
-    //QString valor_max = QString::number(ui->spb_max->value());//guardar vallor max
+    ui->tableWidget->clearContents();
+    ui->tableWidget->setRowCount(0);
 
     int edad_min = ui->spb_min->value(); // Valor mínimo de edad
     int edad_max = ui->spb_max->value(); // Valor máximo de edad
@@ -120,9 +120,8 @@ void Lector::on_btn_busq_edad_clicked()
 
 void Lector::on_btn_busq_nombre_clicked()
 {
-
-   // QString nombre = ui ->txt_nombre->text();//guardar el nombre
-  //  QString palabra = nombre;
+    ui->tableWidget->clearContents();
+    ui->tableWidget->setRowCount(0);
 
     QString nombre = ui->txt_nombre->text(); // Obtener el nombre de la entrada de texto
     QStringList palabras = nombre.split(" "); // Dividir el nombre en palabras separadas por espacios
@@ -173,9 +172,11 @@ void Lector::on_pushButton_clicked()
             // Resize the table widget to match the new data
 
             // Update the table widget with the new data
+            ui->tableWidget->clearContents();
+            ui->tableWidget->setRowCount(0);
             qDebug() << "YO ENTRO al for ";
             qDebug() << "N TOTAL:  " << segment->nTotal;
-            for (int i = 0; i < segment->nTotal + 1; i++)
+            for (int i = 0; i < segment->nTotal; i++)
             {
                 qDebug() << "YO ENTRO al for ";
                 if(segment->empleados[i].id >= 1){

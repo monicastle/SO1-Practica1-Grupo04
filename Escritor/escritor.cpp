@@ -103,8 +103,8 @@ void Escritor::on_btn_id_clicked()
             }
 
             if(!hayPosLibre){
-                segment->numEmpleados_Arreglo++;
                 segment->empleados[segment->numEmpleados_Arreglo] = empleadoAgregar;
+                segment->numEmpleados_Arreglo++;
                 segment->nTotal++;
 
                 QMessageBox::information(this, "EXITO","¡Se ha creado un nuevo empleado exitosamente!");
@@ -157,9 +157,13 @@ void Escritor::on_btn_eliminar_clicked()
     sem_wait(&segment->mutex);
     bool existe = false;
 
+    qDebug() << "tam arreglo: " << segment->nTotal;
+
     QString id_usuario =ui->txt_id->text();
     for (int i = 0; i < segment->nTotal; i++){
+        qDebug() << "ENTRO FOR: " << segment->empleados[i].id;
         if(segment->empleados[i].id == id_usuario.toInt()){
+            qDebug() << "ENTRO if:";
             existe = true;
             segment->empleados[i].id = -1;
             segment->numEmpleados_Arreglo--;
