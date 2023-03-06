@@ -3,6 +3,16 @@
 #include <QMessageBox>
 #include <iostream>
 #include <string>
+#include <iostream>
+#include <QDebug>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <fstream>
+#include <sstream>
 using namespace std;
 Lector::Lector(QWidget *parent)
     : QMainWindow(parent)
@@ -19,14 +29,50 @@ Lector::Lector(QWidget *parent)
    ui->tableWidget->setColumnWidth(0,130);
    ui->tableWidget->setColumnWidth(2,130);
    ui->tableWidget->setColumnWidth(3,130);
-    m_sharedMemory.setKey("MySharedMemory");
-    m_sharedMemory.attach();
+
+
+   // Create shared memory object
+   shm_fd = shm_open(shm_name, O_CREAT | O_RDWR, 0666);
+   if (shm_fd == -1) {
+       perror("shm_open");
+       exit(1);
+   }
+
+   // Set the size of the shared memory object
+   if (ftruncate(shm_fd, shm_size) == -1) {
+       perror("ftruncate");
+       exit(1);
+   }
+
+   // Map the shared memory into this process's address space
+   segment = static_cast<Segmento*>(mmap(NULL, shm_size, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0));
+   if (segment == MAP_FAILED) {
+       perror("mmap failed");
+       exit(1);
+   }
+
+   sem_init(&segment->mutex, 1, 1);
+   sem_init(&segment->sem_Lector, 1, 1);
 
 }
 
 Lector::~Lector()
 {
     delete ui;
+
+    if (munmap(segment, shm_size) == -1) {
+        perror("munmap");
+        exit(1);
+    }
+
+    // Unlink shared memory object
+    if (shm_unlink(shm_name) == -1) {
+        perror("shm_unlink");
+        exit(1);
+    }
+
+    sem_destroy(&segment->mutex);
+    sem_destroy(&segment->sem_Lector);
 }
 
 
@@ -38,9 +84,7 @@ void Lector::on_btn_busq_edad_clicked()
     int edad_min = ui->spb_min->value(); // Valor mínimo de edad
     int edad_max = ui->spb_max->value(); // Valor máximo de edad
 
-    Segmento *segment = static_cast<Segmento*>(m_sharedMemory.data());
-
-    for (int i = 0; i < segment->empleados.size(); i++) {
+    for (int i = 0; i < segment->numEmpleados_Arreglo; i++) {
         if (segment->empleados[i].edad >= edad_min && segment->empleados[i].edad <= edad_max) {
             int fila;
             ui->tableWidget->insertRow(ui->tableWidget->rowCount());
@@ -62,12 +106,10 @@ void Lector::on_btn_busq_nombre_clicked()
    // QString nombre = ui ->txt_nombre->text();//guardar el nombre
   //  QString palabra = nombre;
 
-    Segmento *segment = static_cast<Segmento*>(m_sharedMemory.data());
-
     QString nombre = ui->txt_nombre->text(); // Obtener el nombre de la entrada de texto
     QStringList palabras = nombre.split(" "); // Dividir el nombre en palabras separadas por espacios
 
-    for (int i = 0; i < segment->empleados.size(); i++) {
+    for (int i = 0; i < segment->numEmpleados_Arreglo; i++) {
         for (int j = 0; j < palabras.size(); j++) {
             if (QString(segment->empleados[i].nombreCompleto).contains(palabras[j], Qt::CaseInsensitive)) {
                 int fila;
@@ -89,15 +131,13 @@ void Lector::on_btn_busq_nombre_clicked()
 
 void Lector::on_btn_calcular_clicked()
 {
-             m_sharedMemory.lock();
             // Get a pointer to the data in the shared memory
-            Segmento *segment = static_cast<Segmento*>(m_sharedMemory.data());
 
             // Resize the table widget to match the new data
 
             float totalSueldos = 0.0f;
 
-            for (int i = 0; i < segment->empleados.size(); i++) {
+            for (int i = 0; i < segment->numEmpleados_Arreglo; i++) {
                 totalSueldos += segment->empleados[i].sueldo;
             }
 
@@ -109,14 +149,11 @@ void Lector::on_btn_calcular_clicked()
 
 void Lector::on_pushButton_clicked()
 {
-        m_sharedMemory.lock();
-        // Get a pointer to the data in the shared memory
-        Segmento *segment = static_cast<Segmento*>(m_sharedMemory.data());
 
         // Resize the table widget to match the new data
 
         // Update the table widget with the new data
-        for (int i = 0; i < segment->empleados.size(); i++)
+        for (int i = 0; i < segment->numEmpleados_Arreglo; i++)
         {
             int fila;
             ui->tableWidget->insertRow(ui->tableWidget->rowCount());
@@ -126,8 +163,5 @@ void Lector::on_pushButton_clicked()
             ui->tableWidget->setItem(fila, SALARIO, new QTableWidgetItem(segment->empleados[i].sueldo));
             ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(segment->empleados[i].edad));
         }
-
-        // Detach from the shared memory
-        m_sharedMemory.unlock();
 }
 

@@ -24,7 +24,10 @@ private slots:
 
 private:
     Ui::Lector *ui;
-    QSharedMemory m_sharedMemory;
+    int shm_fd;
+    Segmento* segment;
+    const int shm_size = sizeof(Segmento) * 1000 + sizeof(int);
+    const char* shm_name = "/my_shm";
 
     enum columna{
         ID,NOMBRE,SALARIO,EDAD

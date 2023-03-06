@@ -24,9 +24,6 @@ Escritor::Escritor(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("Escritor");
 
-    pid_t pid = getpid(); // get process ID
-    sprintf(shm_name, "/my_shm_%d", pid);
-
     // Create shared memory object
     shm_fd = shm_open(shm_name, O_CREAT | O_RDWR, 0666);
     if (shm_fd == -1) {
@@ -47,13 +44,7 @@ Escritor::Escritor(QWidget *parent)
         exit(1);
     }
 
-    // SEMAPHORES
-    // Create a named semaphore for synchronization
-        /*sem_ptr = sem_open("/semaphoreArchivo", O_CREAT | O_EXCL, 0666, 1);
-        if (sem_ptr == SEM_FAILED) {
-            perror("sem_open");
-            exit(1);
-        }*/
+    sem_init(&segment->mutex, 1, 1);
 }
 
 Escritor::~Escritor()
@@ -71,47 +62,42 @@ Escritor::~Escritor()
         exit(1);
     }
 
-    // Close and unlink the semaphore
-        /*if (sem_close(sem_ptr) == -1) {
-            perror("sem_close");
-            exit(1);
-        }
-        if (sem_unlink("/semaphoreArchivo") == -1) {
-            perror("sem_unlink");
-            exit(1);
-        }*/
+    sem_destroy(&segment->mutex);
 }
 
 empleado_tipo Generar_Empleado();
 
 void Escritor::on_btn_id_clicked()
 {
-    // Wait for the semaphore to become available
-            /*if (sem_wait(sem_ptr) == -1) {
-                perror("sem_wait");
-                exit(1);
-            }*/
+    sem_wait(&segment->mutex);
 
     empleado_tipo empleadoAgregar = Generar_Empleado();
-        qDebug() << "MEHHHHHHHHHHH: ";
 
-    // Validacion que no pase el limite de empleados posibles
-    if(segment->empleados.size() < 1000){
-        qDebug() << "NO ENTRA ESTA VAINA";
-        segment->empleados.push_back(empleadoAgregar);
-        segment->numEmpleados_Arreglo = segment->empleados.size();
+    qDebug() << "TAM INICIAL ARREGLO: " << segment->numEmpleados_Arreglo;
 
-        QMessageBox::information(this, "EXITO","¡Se ha creado un nuevo empleado exitosamente!");
-        qDebug() << "EMPLEADO CREADO: " << segment->empleados.size();
-    } else {
-        QMessageBox::information(this, "ERROR","Se ha llegado al maximo de empleados");
+    bool existeEmpleado = false;
+    for (int i = 0; i <= segment->numEmpleados_Arreglo; i++){
+        if(segment->empleados[i].id == empleadoAgregar.id){
+            existeEmpleado = true;
+            break;
+        }
     }
-    // Release the semaphore
-           /* if (sem_post(sem_ptr) == -1) {
-                perror("sem_post");
-                exit(1);
-            } */
 
+    if(!existeEmpleado){
+        if(segment->numEmpleados_Arreglo < 1000){
+            qDebug() << "NO ENTRA ESTA VAINA";
+            segment->numEmpleados_Arreglo++;
+            segment->empleados[segment->numEmpleados_Arreglo] = empleadoAgregar;
+
+            QMessageBox::information(this, "EXITO","¡Se ha creado un nuevo empleado exitosamente!");
+            qDebug() << "tam arreglo: " << segment->numEmpleados_Arreglo;
+        } else {
+            QMessageBox::information(this, "ERROR","Se ha llegado al maximo de empleados");
+        }
+    } else {
+        QMessageBox::information(this, "ERROR","El id del empleado ya existe");
+    }
+    sem_post(&segment->mutex);
 }
 
 
@@ -120,7 +106,7 @@ void Escritor::on_btn_mod_clicked()
     bool existe = false;
 
     QString id_usuario =ui->txt_id->text();
-    for (int i = 0; i < segment->empleados.size(); i++){
+    for (int i = 0; i < sizeof(segment->empleados); i++){
         if(segment->empleados[i].id == id_usuario){
             existe = true;
             QString sueldo_empleado =ui->sdp_sueldo ->text();
@@ -141,11 +127,11 @@ void Escritor::on_btn_eliminar_clicked()
     bool existe = false;
 
     QString id_usuario =ui->txt_id->text();
-    for (int i = 0; i < segment->empleados.size(); i++){
+    for (int i = 0; i < sizeof(segment->empleados); i++){
         if(segment->empleados[i].id == id_usuario){
             existe = true;
-            segment->empleados.erase(segment->empleados.begin() + i);
-            segment->numEmpleados_Arreglo = segment->empleados.size();
+            //segment->empleados.erase(segment->empleados.begin() + i);
+            //segment->numEmpleados_Arreglo = segment->empleados.size();
             QMessageBox::information(this, "EXITO","¡Se ha eliminado al empleado exitosamente!");
         }
     }

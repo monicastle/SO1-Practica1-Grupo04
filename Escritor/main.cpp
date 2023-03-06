@@ -31,16 +31,6 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 
-
-bool existeEmpleado(int idEmpleado){
-    /*for (int i = 0; i < segment->empleados.size(); i++){
-        if(segment->empleados[i].id == idEmpleado){
-            return true;
-        }
-    }
-    return false;*/
-}
-
 empleado_tipo Generar_Empleado(){
     string nombreArchivo = "empleados.txt";
     ifstream archivoEmpleado(nombreArchivo);
@@ -65,14 +55,6 @@ empleado_tipo Generar_Empleado(){
         //Tokenizamos la linea
         QString str = QString::fromStdString(lineasEmpleados[randomEmpleado]);
         QStringList tokens = str.split(",");
-
-        // Validacion id del empleado
-        /*while(existeEmpleado(tokens[0].toInt())){
-            srand(time(0));
-            randomEmpleado = rand() % lineasEmpleados.size();
-            str = QString::fromStdString(lineasEmpleados[randomEmpleado]);
-            tokens = str.split(",");
-        } // Fin While*/
 
         // Creacion del Nuevo Empleado
         empleado_tipo nuevoEmpleado;

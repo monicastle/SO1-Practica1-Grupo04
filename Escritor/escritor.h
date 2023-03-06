@@ -35,8 +35,6 @@ private:
     int shm_fd;
     Segmento* segment;
     const int shm_size = sizeof(Segmento) * 1000 + sizeof(int);
-    sem_t* sem_ptr;
-
-    char shm_name[50];
+    const char* shm_name = "/my_shm";
 };
 #endif // ESCRITOR_H

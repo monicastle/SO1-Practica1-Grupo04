@@ -6,13 +6,16 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <semaphore.h>
 
 using namespace std;
 
 struct Segmento {
     constexpr static int numMax_Empleados = 1000;
-    vector<empleado_tipo> empleados;
-    int numEmpleados_Arreglo;
+    empleado_tipo empleados[numMax_Empleados];
+    int numEmpleados_Arreglo = 0;
+    sem_t mutex;
+    sem_t sem_Lector;
 };
 
 #endif // SEGMENTO_H
