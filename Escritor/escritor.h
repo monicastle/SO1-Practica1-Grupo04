@@ -2,16 +2,12 @@
 #define ESCRITOR_H
 
 #include <QMainWindow>
+#include "segmento.h"
+#include "tipo_empleado.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Escritor; }
 QT_END_NAMESPACE
-
-extern int id_usuario;
-extern char nombre_Completo_user[50];
-extern float sueldo_user;
-extern int edad_user;
-
 
 class Escritor : public QMainWindow
 {
@@ -34,5 +30,6 @@ private slots:
 
 private:
     Ui::Escritor *ui;
+    QSharedMemory m_sharedMemory;
 };
 #endif // ESCRITOR_H

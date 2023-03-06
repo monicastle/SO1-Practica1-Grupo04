@@ -7,6 +7,9 @@ Lector::Lector(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle("Lector");
+
+    m_sharedMemory.setKey("MySharedMemory");
+    m_sharedMemory.attach();
 }
 
 Lector::~Lector()

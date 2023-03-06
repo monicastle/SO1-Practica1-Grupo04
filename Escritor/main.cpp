@@ -1,26 +1,22 @@
 #include "escritor.h"
+#include "tipo_empleado.h"
 #include <QApplication>
 #include <QSharedMemory>
 #include <QDataStream>
 #include <QDebug>
-#include  <QMessageBox>
+#include <QMessageBox>
 #include <iostream>
-using namespace std;
-int numero =0;
-// Especie de clase para un Empleado
-struct empleado_tipo {
-    int id;
-    char nombreCompleto[50];
-    float sueldo;
-    int edad;
-};
+#include <fstream>
+#include <QStringList>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <QSystemSemaphore>
 
-// Segmento con la data para la Memoria Compartida
-struct Segmento {
-    constexpr static int numMax_Empleados = 1000;
-    empleado_tipo empleados[numMax_Empleados];
-    int numEmpleados_Arreglo;
-};
+using namespace std;
+
+empleado_tipo Generar_Empleado();
 
 int main(int argc, char *argv[])
 {
@@ -29,47 +25,55 @@ int main(int argc, char *argv[])
     Escritor w;
     w.show();
 
-    // Llave para la Memoria Compartida
-    //const int sharedMemorySize = sizeof(Segmento);
-    const QString sharedMemoryKey = "MySharedMemory";
-    QSharedMemory sharedMemory(sharedMemoryKey);
-
-    if (!sharedMemory.isAttached() && !sharedMemory.attach()) {
-        qWarning("Unable to attach to shared memory segment: %s", sharedMemory.errorString().toUtf8().constData());
-        return 1;
-    }
-
-
-    Segmento* sharedMemoryPointer = (Segmento*) sharedMemory.data();
-    Segmento segment = *sharedMemoryPointer;
-
-    qDebug("Data read to shared memory: %d, %d", segment.numEmpleados_Arreglo, segment.numMax_Empleados);
-
     return a.exec();
 }
 
-string Empleados (){
-    string nombres;
-    if(numero%2 == 0){
-        string nombresA[] = {"Skarleth", "Ana", "Bessy", "Maria", "Claudia", "Daniela", "Sofia", "Elena", "Lucia", "Fatima", "Sahory", "Monica", "Grabriela", "Helen", "Indira", "Karla", "Carmen", "Vanesa", "Laura", "Merlina", "Valeria", "Jimena", "Eva", "Paula", "Paola", "Danna", "Zoe", "Belinda", "Anahi", "Isabella" };
-        string apellidos[] = {"Cano", "Herrera", "Castillo", "Mendoza", "Meraz", "Duarte", "Hernandez", "Fernandez", "Rodriguez", "Murillo", "Aguilar", "Gonsalez", "Lainez", "Cruz", "Flores", "Zepeda", "Castellano", "Lopez", "Solorzano", "Navarro", "Rivera", "Garcia", "Ramirez", "Matamoros", "Perez", "Sosa", "Torres", "Diaz", "Ortiz", "Gutierrez" };
+
+bool existeEmpleado(string idEmpleado){
+
+}
+
+empleado_tipo Generar_Empleado(){
+    string nombreArchivo = "empleados.txt";
+    ifstream archivoEmpleado(nombreArchivo);
+
+    // Validacion si el archivo existe o no
+    if (!archivoEmpleado.is_open()){
+        cout << "Ha sucedido un error al abrir el archivo" << endl;
+    } else {
+        // Vector para almacenar las lineas de empleaados del archivo
+        vector<string> lineasEmpleados;
+        string linea;
+
+        while (getline(archivoEmpleado, linea)){
+            lineasEmpleados.push_back(linea);
+        }
+        archivoEmpleado.close();
+
+        // Aleatoriamente elige a un empleado del archivo
         srand(time(0));
-        int indice = rand() % 30;
-        int indice1 = rand() % 30;
-        int indice2 = rand() % 30;
-        int indice3 = rand() % 30;
-        nombres = nombresA[indice] + " " + nombresA[indice1] + " " + apellidos[indice2] + " " + apellidos[indice3];
-        numero++;
-    }else{
-        string nombresA[] = {"Juan", "Ariel", "Pedro", "Bernardo", "Jose", "Luis", "Cesar", "Carlos", "Daniel", "Miguel", "Elvin", "Fabricio", "Jesus", "Mario", "Carlos", "Josue", "Gabriel", "Hector", "Adrian", "Andres", "Ivan", "Jonathan", "Oscar", "Ruben", "Denis", "Omar", "Angel", "Noah", "Alessio", "Santiago" };
-        string apellidos[] = {"Cano", "Herrera", "Castillo", "Mendoza", "Meraz", "Duarte", "Hernandez", "Fernandez", "Rodriguez", "Murillo", "Aguilar", "Gonsalez", "Lainez", "Cruz", "Flores", "Zepeda", "Castellano", "Lopez", "Solorzano", "Navarro", "Rivera", "Garcia", "Ramirez", "Matamoros", "Perez", "Sosa", "Torres", "Diaz", "Ortiz", "Gutierrez" };
-        srand(time(0));
-        int indice = rand() % 30;
-        int indice1 = rand() % 30;
-        int indice2 = rand() % 30;
-        int indice3 = rand() % 30;
-        nombres = nombresA[indice] + " " + nombresA[indice1] + " " + apellidos[indice2] + " " + apellidos[indice3];
-        numero++;
-    }
-    return nombres;
+        int randomEmpleado = rand() % lineasEmpleados.size();
+
+        //Tokenizamos la linea
+        QString str = QString::fromStdString(lineasEmpleados[randomEmpleado]);
+        QStringList tokens = str.split(",");
+
+        // Validacion id del empleado
+        /*while(existeEmpleado(tokens[0].toStdString())){ // TRUE
+            srand(time(0));
+            randomEmpleado = rand() % lineasEmpleados.size();
+            str = QString::fromStdString(lineasEmpleados[randomEmpleado]);
+            tokens = str.split(",");
+        } // Fin While*/
+
+        // Creacion del Nuevo Empleado
+        empleado_tipo nuevoEmpleado;
+        nuevoEmpleado.id = tokens[0].toInt();
+        QByteArray byteArray = tokens[1].toUtf8();
+        strcpy(nuevoEmpleado.nombreCompleto, byteArray.constData());
+        nuevoEmpleado.sueldo = tokens[2].toFloat();
+        nuevoEmpleado.edad = tokens[3].toInt();
+
+        return nuevoEmpleado;
+    } // Fin If
 }

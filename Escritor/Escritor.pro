@@ -13,7 +13,9 @@ SOURCES += \
     escritor.cpp
 
 HEADERS += \
-    escritor.h
+    escritor.h \
+    segmento.h \
+    tipo_empleado.h
 
 FORMS += \
     escritor.ui

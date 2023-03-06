@@ -2,6 +2,7 @@
 #define LECTOR_H
 
 #include <QMainWindow>
+#include "segmento.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Lector; }
@@ -24,5 +25,6 @@ private slots:
 
 private:
     Ui::Lector *ui;
+    QSharedMemory m_sharedMemory;
 };
 #endif // LECTOR_H

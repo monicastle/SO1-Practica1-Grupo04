@@ -13,7 +13,9 @@ SOURCES += \
     lector.cpp
 
 HEADERS += \
-    lector.h
+    lector.h \
+    segmento.h \
+    tipo_empleado.h
 
 FORMS += \
     lector.ui
