@@ -18,13 +18,16 @@ public:
 
 private slots:
     void on_btn_busq_edad_clicked();
-
     void on_btn_busq_nombre_clicked();
-
     void on_btn_calcular_clicked();
+    void on_pushButton_clicked();
 
 private:
     Ui::Lector *ui;
     QSharedMemory m_sharedMemory;
+
+    enum columna{
+        ID,NOMBRE,SALARIO,EDAD
+    };
 };
 #endif // LECTOR_H

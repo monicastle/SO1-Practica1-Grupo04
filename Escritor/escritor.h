@@ -4,6 +4,10 @@
 #include <QMainWindow>
 #include "segmento.h"
 #include "tipo_empleado.h"
+#include <iostream>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <semaphore.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Escritor; }
@@ -26,10 +30,13 @@ private slots:
 
     void on_btn_eliminar_clicked();
 
-    void on_btn_buscar_clicked();
-
 private:
     Ui::Escritor *ui;
-    QSharedMemory m_sharedMemory;
+    int shm_fd;
+    Segmento* segment;
+    const int shm_size = sizeof(Segmento) * 1000 + sizeof(int);
+    sem_t* sem_ptr;
+
+    char shm_name[50];
 };
 #endif // ESCRITOR_H

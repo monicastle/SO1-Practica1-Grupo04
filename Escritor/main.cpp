@@ -1,10 +1,9 @@
 #include "escritor.h"
+#include "segmento.h"
 #include "tipo_empleado.h"
 #include <QApplication>
 #include <QSharedMemory>
 #include <QDataStream>
-#include <QDebug>
-#include <QMessageBox>
 #include <iostream>
 #include <fstream>
 #include <QStringList>
@@ -12,9 +11,13 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
-#include <QSystemSemaphore>
 
 using namespace std;
+
+//m_sharedMemory.setKey("MySharedMemory");
+//m_sharedMemory.create(sizeof(Segmento));
+
+//Segmento *segment = static_cast<Segmento*>(m_sharedMemory.data());
 
 empleado_tipo Generar_Empleado();
 
@@ -29,8 +32,13 @@ int main(int argc, char *argv[])
 }
 
 
-bool existeEmpleado(string idEmpleado){
-
+bool existeEmpleado(int idEmpleado){
+    /*for (int i = 0; i < segment->empleados.size(); i++){
+        if(segment->empleados[i].id == idEmpleado){
+            return true;
+        }
+    }
+    return false;*/
 }
 
 empleado_tipo Generar_Empleado(){
@@ -59,7 +67,7 @@ empleado_tipo Generar_Empleado(){
         QStringList tokens = str.split(",");
 
         // Validacion id del empleado
-        /*while(existeEmpleado(tokens[0].toStdString())){ // TRUE
+        /*while(existeEmpleado(tokens[0].toInt())){
             srand(time(0));
             randomEmpleado = rand() % lineasEmpleados.size();
             str = QString::fromStdString(lineasEmpleados[randomEmpleado]);
