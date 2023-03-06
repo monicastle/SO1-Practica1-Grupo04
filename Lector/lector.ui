@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>599</width>
-    <height>510</height>
+    <width>787</width>
+    <height>639</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,15 +19,15 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>601</width>
-      <height>491</height>
+      <width>791</width>
+      <height>601</height>
      </rect>
     </property>
     <property name="text">
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="Lector.qrc">:/Imagenes/Lector.png</pixmap>
+     <pixmap resource="Imagenes/Imagenes_form.qrc">:/Imagen_grande_final.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -36,9 +36,9 @@
    <widget class="QSpinBox" name="spb_min">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>120</y>
-      <width>71</width>
+      <x>180</x>
+      <y>130</y>
+      <width>151</width>
       <height>26</height>
      </rect>
     </property>
@@ -46,9 +46,9 @@
    <widget class="QSpinBox" name="spb_max">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>120</y>
-      <width>71</width>
+      <x>450</x>
+      <y>130</y>
+      <width>171</width>
       <height>26</height>
      </rect>
     </property>
@@ -56,9 +56,9 @@
    <widget class="QLineEdit" name="txt_nombre">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>170</y>
-      <width>291</width>
+      <x>180</x>
+      <y>180</y>
+      <width>441</width>
       <height>25</height>
      </rect>
     </property>
@@ -66,8 +66,8 @@
    <widget class="QPushButton" name="btn_busq_edad">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>120</y>
+      <x>650</x>
+      <y>130</y>
       <width>51</width>
       <height>25</height>
      </rect>
@@ -92,8 +92,8 @@
    <widget class="QPushButton" name="btn_busq_nombre">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>170</y>
+      <x>650</x>
+      <y>180</y>
       <width>51</width>
       <height>25</height>
      </rect>
@@ -118,18 +118,18 @@
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>210</y>
-      <width>501</width>
-      <height>211</height>
+      <x>60</x>
+      <y>220</y>
+      <width>671</width>
+      <height>311</height>
      </rect>
     </property>
    </widget>
    <widget class="QLineEdit" name="txt_total">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>440</y>
+      <x>290</x>
+      <y>550</y>
       <width>231</width>
       <height>25</height>
      </rect>
@@ -138,8 +138,8 @@
    <widget class="QPushButton" name="btn_calcular">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>440</y>
+      <x>530</x>
+      <y>550</y>
       <width>89</width>
       <height>25</height>
      </rect>
@@ -151,14 +151,27 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>80</y>
-      <width>89</width>
-      <height>25</height>
+      <x>740</x>
+      <y>130</y>
+      <width>41</width>
+      <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="text">
-     <string>PushButton</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="Imagenes/Imagenes_form.qrc">
+      <normaloff>:/sincronizar.png</normaloff>:/sincronizar.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>28</width>
+      <height>28</height>
+     </size>
     </property>
    </widget>
   </widget>
@@ -167,7 +180,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>599</width>
+     <width>787</width>
      <height>22</height>
     </rect>
    </property>
@@ -175,7 +188,8 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="Lector.qrc"/>
+  <include location="Imagenes/Imagenes_form.qrc"/>
+  <include location="Imagenes/Imagenes_form.qrc"/>
  </resources>
  <connections/>
 </ui>

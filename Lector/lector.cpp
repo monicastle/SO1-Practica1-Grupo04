@@ -27,10 +27,10 @@ Lector::Lector(QWidget *parent)
     titulos << "ID" << "Nombre" <<  "Sueldo" << "Edad";
 
    ui->tableWidget->setHorizontalHeaderLabels(titulos);
-   ui->tableWidget->setColumnWidth(0,130);
-   ui->tableWidget->setColumnWidth(0,130);
-   ui->tableWidget->setColumnWidth(2,130);
-   ui->tableWidget->setColumnWidth(3,130);
+   ui->tableWidget->setColumnWidth(0,100);
+   ui->tableWidget->setColumnWidth(1,300);
+   ui->tableWidget->setColumnWidth(2,160);
+   ui->tableWidget->setColumnWidth(3,100);
 
 
    // Create shared memory object

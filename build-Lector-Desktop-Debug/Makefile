@@ -53,10 +53,12 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../Lector/main.cpp \
-		../Lector/lector.cpp qrc_Lector.cpp \
+		../Lector/lector.cpp qrc_Imagenes_form.cpp \
+		qrc_Lector.cpp \
 		moc_lector.cpp
 OBJECTS       = main.o \
 		lector.o \
+		qrc_Imagenes_form.o \
 		qrc_Lector.o \
 		moc_lector.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -137,7 +139,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../Lector/Lector.pro ../Lector/lector.h ../Lector/main.cpp \
+		../Lector/Lector.pro ../Lector/lector.h \
+		../Lector/segmento.h \
+		../Lector/tipo_empleado.h ../Lector/main.cpp \
 		../Lector/lector.cpp
 QMAKE_TARGET  = Lector
 DESTDIR       = 
@@ -229,6 +233,7 @@ Makefile: ../Lector/Lector.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/q
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../Lector/Lector.pro \
+		../Lector/Imagenes/Imagenes_form.qrc \
 		../Lector/Lector.qrc
 	$(QMAKE) -o Makefile ../Lector/Lector.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf:
@@ -310,6 +315,7 @@ Makefile: ../Lector/Lector.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/q
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf:
 ../Lector/Lector.pro:
+../Lector/Imagenes/Imagenes_form.qrc:
 ../Lector/Lector.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../Lector/Lector.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
@@ -325,9 +331,9 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../Lector/Lector.qrc $(DISTDIR)/
+	$(COPY_FILE) --parents ../Lector/Imagenes/Imagenes_form.qrc ../Lector/Lector.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Lector/lector.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Lector/lector.h ../Lector/segmento.h ../Lector/tipo_empleado.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../Lector/main.cpp ../Lector/lector.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Lector/lector.ui $(DISTDIR)/
 
@@ -353,9 +359,21 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all: qrc_Lector.cpp
+compiler_rcc_make_all: qrc_Imagenes_form.cpp qrc_Lector.cpp
 compiler_rcc_clean:
-	-$(DEL_FILE) qrc_Lector.cpp
+	-$(DEL_FILE) qrc_Imagenes_form.cpp qrc_Lector.cpp
+qrc_Imagenes_form.cpp: ../Lector/Imagenes/Imagenes_form.qrc \
+		/usr/lib/qt5/bin/rcc \
+		../Lector/Imagenes/buscar(1).png \
+		../Lector/Imagenes/buscar(1)(1).png \
+		../Lector/Imagenes/buscar.png \
+		../Lector/Imagenes/sincronizar.png \
+		../Lector/Imagenes/buscar(2)(1).png \
+		../Lector/Imagenes/Imagen_grande_final.png \
+		../Lector/Imagenes/Imagenes_form.qrc \
+		../Lector/Imagenes/buscar(2).png
+	/usr/lib/qt5/bin/rcc -name Imagenes_form ../Lector/Imagenes/Imagenes_form.qrc -o qrc_Imagenes_form.cpp
+
 qrc_Lector.cpp: ../Lector/Lector.qrc \
 		/usr/lib/qt5/bin/rcc \
 		../Lector/Imagenes/Lector.png
@@ -371,6 +389,8 @@ compiler_moc_header_make_all: moc_lector.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_lector.cpp
 moc_lector.cpp: ../Lector/lector.h \
+		../Lector/segmento.h \
+		../Lector/tipo_empleado.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include '/home/skarll/Escritorio/Proyecto SO/SO1-Practica1-Grupo04/build-Lector-Desktop-Debug/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/skarll/Escritorio/Proyecto SO/SO1-Practica1-Grupo04/Lector' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../Lector/lector.h -o moc_lector.cpp
@@ -396,12 +416,19 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 
 ####### Compile
 
-main.o: ../Lector/main.cpp ../Lector/lector.h
+main.o: ../Lector/main.cpp ../Lector/lector.h \
+		../Lector/segmento.h \
+		../Lector/tipo_empleado.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Lector/main.cpp
 
 lector.o: ../Lector/lector.cpp ../Lector/lector.h \
+		../Lector/segmento.h \
+		../Lector/tipo_empleado.h \
 		ui_lector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lector.o ../Lector/lector.cpp
+
+qrc_Imagenes_form.o: qrc_Imagenes_form.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_Imagenes_form.o qrc_Imagenes_form.cpp
 
 qrc_Lector.o: qrc_Lector.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_Lector.o qrc_Lector.cpp

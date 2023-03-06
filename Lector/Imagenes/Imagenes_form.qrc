@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>buscar.png</file>
+        <file>buscar(1).png</file>
+        <file>buscar(1)(1).png</file>
+        <file>buscar(2).png</file>
+        <file>buscar(2)(1).png</file>
+        <file>Imagenes_form.qrc</file>
+        <file>Imagen_grande_final.png</file>
+        <file>sincronizar.png</file>
+    </qresource>
+</RCC>

@@ -38,6 +38,7 @@ public:
     QTableWidget *tableWidget;
     QLineEdit *txt_total;
     QPushButton *btn_calcular;
+    QPushButton *pushButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -45,26 +46,26 @@ public:
     {
         if (Lector->objectName().isEmpty())
             Lector->setObjectName(QString::fromUtf8("Lector"));
-        Lector->resize(599, 510);
+        Lector->resize(787, 639);
         centralwidget = new QWidget(Lector);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         label = new QLabel(centralwidget);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(0, 0, 601, 491));
-        label->setPixmap(QPixmap(QString::fromUtf8(":/Imagenes/Lector.png")));
+        label->setGeometry(QRect(0, 0, 791, 601));
+        label->setPixmap(QPixmap(QString::fromUtf8(":/Imagen_grande_final.png")));
         label->setScaledContents(true);
         spb_min = new QSpinBox(centralwidget);
         spb_min->setObjectName(QString::fromUtf8("spb_min"));
-        spb_min->setGeometry(QRect(170, 120, 71, 26));
+        spb_min->setGeometry(QRect(180, 130, 151, 26));
         spb_max = new QSpinBox(centralwidget);
         spb_max->setObjectName(QString::fromUtf8("spb_max"));
-        spb_max->setGeometry(QRect(390, 120, 71, 26));
+        spb_max->setGeometry(QRect(450, 130, 171, 26));
         txt_nombre = new QLineEdit(centralwidget);
         txt_nombre->setObjectName(QString::fromUtf8("txt_nombre"));
-        txt_nombre->setGeometry(QRect(170, 170, 291, 25));
+        txt_nombre->setGeometry(QRect(180, 180, 441, 25));
         btn_busq_edad = new QPushButton(centralwidget);
         btn_busq_edad->setObjectName(QString::fromUtf8("btn_busq_edad"));
-        btn_busq_edad->setGeometry(QRect(480, 120, 51, 25));
+        btn_busq_edad->setGeometry(QRect(650, 130, 51, 25));
         btn_busq_edad->setStyleSheet(QString::fromUtf8("border: none;"));
         QIcon icon;
         icon.addFile(QString::fromUtf8("../../../../Descargas/buscar.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -72,23 +73,31 @@ public:
         btn_busq_edad->setIconSize(QSize(25, 25));
         btn_busq_nombre = new QPushButton(centralwidget);
         btn_busq_nombre->setObjectName(QString::fromUtf8("btn_busq_nombre"));
-        btn_busq_nombre->setGeometry(QRect(480, 170, 51, 25));
+        btn_busq_nombre->setGeometry(QRect(650, 180, 51, 25));
         btn_busq_nombre->setStyleSheet(QString::fromUtf8("border: none;"));
         btn_busq_nombre->setIcon(icon);
         btn_busq_nombre->setIconSize(QSize(25, 25));
         tableWidget = new QTableWidget(centralwidget);
         tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
-        tableWidget->setGeometry(QRect(50, 210, 501, 211));
+        tableWidget->setGeometry(QRect(60, 220, 671, 311));
         txt_total = new QLineEdit(centralwidget);
         txt_total->setObjectName(QString::fromUtf8("txt_total"));
-        txt_total->setGeometry(QRect(190, 440, 231, 25));
+        txt_total->setGeometry(QRect(290, 550, 231, 25));
         btn_calcular = new QPushButton(centralwidget);
         btn_calcular->setObjectName(QString::fromUtf8("btn_calcular"));
-        btn_calcular->setGeometry(QRect(440, 440, 89, 25));
+        btn_calcular->setGeometry(QRect(530, 550, 89, 25));
+        pushButton = new QPushButton(centralwidget);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setGeometry(QRect(740, 130, 41, 31));
+        pushButton->setStyleSheet(QString::fromUtf8(""));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/sincronizar.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton->setIcon(icon1);
+        pushButton->setIconSize(QSize(28, 28));
         Lector->setCentralWidget(centralwidget);
         menubar = new QMenuBar(Lector);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 599, 22));
+        menubar->setGeometry(QRect(0, 0, 787, 22));
         Lector->setMenuBar(menubar);
         statusbar = new QStatusBar(Lector);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -106,6 +115,7 @@ public:
         btn_busq_edad->setText(QString());
         btn_busq_nombre->setText(QString());
         btn_calcular->setText(QCoreApplication::translate("Lector", "Calcular", nullptr));
+        pushButton->setText(QString());
     } // retranslateUi
 
 };
