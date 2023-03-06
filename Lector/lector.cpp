@@ -33,28 +33,29 @@ Lector::Lector(QWidget *parent)
    ui->tableWidget->setColumnWidth(3,100);
 
 
-   // Create shared memory object
-   shm_fd = shm_open(shm_name, O_CREAT | O_RDWR, 0666);
-   if (shm_fd == -1) {
-       perror("shm_open");
-       exit(1);
-   }
+   qDebug() << "PARTE 1 LA CORRE  ";
 
-   // Set the size of the shared memory object
-   if (ftruncate(shm_fd, shm_size) == -1) {
-       perror("ftruncate");
-       exit(1);
-   }
+  // Open shared memory object
+  shm_fd = shm_open(shm_name, O_RDONLY, 0666);
+  if (shm_fd == -1) {
+      perror("shm_open");
+      exit(1);
+  }
 
-   // Map the shared memory into this process's address space
-   segment = static_cast<Segmento*>(mmap(NULL, shm_size, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0));
-   if (segment == MAP_FAILED) {
-       perror("mmap failed");
-       exit(1);
-   }
+   qDebug() << "PARTE 2 LA CORRE  ";
 
-   sem_init(&segment->mutex, 1, 1);
-   sem_init(&segment->sem_Lector, 1, 1);
+  // Map shared memory object into process address space
+  segment = static_cast<Segmento*>(mmap(NULL, shm_size, PROT_READ, MAP_SHARED, shm_fd, 0));
+  if (segment == MAP_FAILED) {
+      perror("mmap");
+      exit(1);
+  }
+
+   qDebug() << "PARTE 3 LA CORRE ";
+  //sem_init(&segment->mutex, 1, 1); // AQUI ME TRUENA
+  qDebug() << "PARTE 4 LA CORRE ";
+  //sem_init(&segment->sem_Lector, 1, 1);
+  qDebug() << "PARTE 5 LA CORRE ";
 
 }
 
@@ -73,8 +74,8 @@ Lector::~Lector()
         exit(1);
     }
 
-    sem_destroy(&segment->mutex);
-    sem_destroy(&segment->sem_Lector);
+    //sem_destroy(&segment->mutex);
+    //sem_destroy(&segment->sem_Lector);
 }
 
 
@@ -146,18 +147,39 @@ void Lector::on_btn_calcular_clicked()
 void Lector::on_pushButton_clicked()
 {
 
-        // Resize the table widget to match the new data
-
-        // Update the table widget with the new data
-        for (int i = 0; i < segment->numEmpleados_Arreglo; i++)
-        {
-            int fila;
-            ui->tableWidget->insertRow(ui->tableWidget->rowCount());
-            fila=ui->tableWidget->rowCount() - 1;
-            ui->tableWidget->setItem(fila, ID, new QTableWidgetItem(segment->empleados[i].id));
-            ui->tableWidget->setItem(fila, NOMBRE, new QTableWidgetItem(segment->empleados[i].nombreCompleto));
-            ui->tableWidget->setItem(fila, SALARIO, new QTableWidgetItem(segment->empleados[i].sueldo));
-            ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(segment->empleados[i].edad));
+    /**sem_wait(&segment->sem_Lector);
+        if (segment->nLector == 0){
+            sem_wait(&segment->mutex);
         }
+        segment->nLector++;
+        sem_post(&segment->sem_Lector);*/
+
+            // Resize the table widget to match the new data
+
+            // Update the table widget with the new data
+            qDebug() << "YO ENTRO al for ";
+            qDebug() << "N TOTAL:  " << segment->nTotal;
+            for (int i = 0; i < segment->nTotal; i++)
+            {
+                qDebug() << "YO ENTRO al for ";
+                if(segment->empleados[i].id >= 1){
+                    // Update the table widget with the new data
+                    qDebug() << "entro al if  ";
+                    int fila;
+                    ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+                    fila=ui->tableWidget->rowCount() - 1;
+                    ui->tableWidget->setItem(fila, ID, new QTableWidgetItem(segment->empleados[i].id));
+                    ui->tableWidget->setItem(fila, NOMBRE, new QTableWidgetItem(segment->empleados[i].nombreCompleto));
+                    ui->tableWidget->setItem(fila, SALARIO, new QTableWidgetItem(segment->empleados[i].sueldo));
+                    ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(segment->empleados[i].edad));
+                }
+            }
+        /*sem_wait(&segment->sem_Lector);
+        segment->nLector--;
+
+        if (segment->nLector == 0){
+            sem_post(&segment->mutex);
+        }
+        sem_post(&segment->sem_Lector);*/
 }
 

@@ -78,7 +78,7 @@ void Escritor::on_btn_id_clicked()
     bool existeEmpleado = false;
     bool hayPosLibre = false;
 
-    for (int i = 0; i <= segment->numMax_Empleados; i++){
+    for (int i = 0; i <= segment->nTotal; i++){
         if(segment->empleados[i].id == empleadoAgregar.id){
             existeEmpleado = true;
             break;
@@ -87,7 +87,7 @@ void Escritor::on_btn_id_clicked()
 
     if(!existeEmpleado){
         if(segment->numEmpleados_Arreglo < 1000){
-            for (int i = 0; i < segment->numMax_Empleados; i++){
+            for (int i = 0; i < segment->nTotal; i++){
                 if(segment->empleados[i].id == -1){
                     segment->empleados[segment->numEmpleados_Arreglo] = empleadoAgregar;
                     segment->numEmpleados_Arreglo++;
@@ -105,6 +105,7 @@ void Escritor::on_btn_id_clicked()
             if(!hayPosLibre){
                 segment->numEmpleados_Arreglo++;
                 segment->empleados[segment->numEmpleados_Arreglo] = empleadoAgregar;
+                segment->nTotal++;
 
                 QMessageBox::information(this, "EXITO","¡Se ha creado un nuevo empleado exitosamente!");
                 qDebug() << "tam arreglo: " << segment->numEmpleados_Arreglo;
@@ -131,7 +132,7 @@ void Escritor::on_btn_mod_clicked()
 
     QString id_usuario =ui->txt_id->text();
     if(id_usuario.toInt() >=  1){
-        for (int i = 0; i < segment->numMax_Empleados; i++){
+        for (int i = 0; i < segment->nTotal; i++){
             if(segment->empleados[i].id == id_usuario.toInt()){
                 existe = true;
                 QString sueldo_empleado =ui->sdp_sueldo ->text();
@@ -153,10 +154,11 @@ void Escritor::on_btn_mod_clicked()
 
 void Escritor::on_btn_eliminar_clicked()
 {
+    sem_wait(&segment->mutex);
     bool existe = false;
 
     QString id_usuario =ui->txt_id->text();
-    for (int i = 0; i < segment->numEmpleados_Arreglo; i++){
+    for (int i = 0; i < segment->nTotal; i++){
         if(segment->empleados[i].id == id_usuario.toInt()){
             existe = true;
             segment->empleados[i].id = -1;
@@ -169,7 +171,7 @@ void Escritor::on_btn_eliminar_clicked()
     if(existe == false){
         QMessageBox::information(this, "ERROR","No se pudo eliminar al empleado ya que el ID ingresado no existe");
     }
-    shmdt(segment);
+    sem_post(&segment->mutex);
 }
 
 

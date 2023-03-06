@@ -35,6 +35,6 @@ private:
     int shm_fd;
     Segmento* segment;
     const int shm_size = sizeof(Segmento) * 1000 + sizeof(int);
-    const char* shm_name = "/my_shm";
+    const char* shm_name = "memoriaCompartida";
 };
 #endif // ESCRITOR_H
