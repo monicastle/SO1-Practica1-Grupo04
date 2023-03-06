@@ -57,6 +57,22 @@ Lector::Lector(QWidget *parent)
   //sem_init(&segment->sem_Lector, 1, 1);
   qDebug() << "PARTE 5 LA CORRE ";
 
+  for (int i = 0; i < segment->nTotal + 1; i++)
+  {
+      qDebug() << "YO ENTRO al for ";
+      if(segment->empleados[i].id >= 1){
+          // Update the table widget with the new data
+          qDebug() << "entro al if  ";
+          int fila;
+          ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+          fila=ui->tableWidget->rowCount() - 1;
+          ui->tableWidget->setItem(fila, ID, new QTableWidgetItem(QString::number(segment->empleados[i].id)));
+          ui->tableWidget->setItem(fila, NOMBRE, new QTableWidgetItem(segment->empleados[i].nombreCompleto));
+          ui->tableWidget->setItem(fila, SALARIO, new QTableWidgetItem(QString::number(segment->empleados[i].sueldo)));
+          ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(QString::number(segment->empleados[i].edad)));
+      }
+  }
+
 }
 
 Lector::~Lector()
@@ -159,7 +175,7 @@ void Lector::on_pushButton_clicked()
             // Update the table widget with the new data
             qDebug() << "YO ENTRO al for ";
             qDebug() << "N TOTAL:  " << segment->nTotal;
-            for (int i = 0; i < segment->nTotal; i++)
+            for (int i = 0; i < segment->nTotal + 1; i++)
             {
                 qDebug() << "YO ENTRO al for ";
                 if(segment->empleados[i].id >= 1){
@@ -168,10 +184,10 @@ void Lector::on_pushButton_clicked()
                     int fila;
                     ui->tableWidget->insertRow(ui->tableWidget->rowCount());
                     fila=ui->tableWidget->rowCount() - 1;
-                    ui->tableWidget->setItem(fila, ID, new QTableWidgetItem(segment->empleados[i].id));
+                    ui->tableWidget->setItem(fila, ID, new QTableWidgetItem(QString::number(segment->empleados[i].id)));
                     ui->tableWidget->setItem(fila, NOMBRE, new QTableWidgetItem(segment->empleados[i].nombreCompleto));
-                    ui->tableWidget->setItem(fila, SALARIO, new QTableWidgetItem(segment->empleados[i].sueldo));
-                    ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(segment->empleados[i].edad));
+                    ui->tableWidget->setItem(fila, SALARIO, new QTableWidgetItem(QString::number(segment->empleados[i].sueldo)));
+                    ui->tableWidget->setItem(fila, EDAD, new QTableWidgetItem(QString::number(segment->empleados[i].edad)));
                 }
             }
         /*sem_wait(&segment->sem_Lector);
