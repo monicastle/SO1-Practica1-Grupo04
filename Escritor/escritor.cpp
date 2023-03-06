@@ -24,23 +24,21 @@ Escritor::Escritor(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("Escritor");
 
-    // Create shared memory object
     shm_fd = shm_open(shm_name, O_CREAT | O_RDWR, 0666);
     if (shm_fd == -1) {
-        perror("shm_open");
+        perror("Error al abrir o crear el archivo de memoria compartida");
         exit(1);
     }
 
-    // Set the size of the shared memory object
     if (ftruncate(shm_fd, shm_size) == -1) {
-        perror("ftruncate");
+        perror("Error al establecer el tamano del archivo");
         exit(1);
     }
 
     // Map the shared memory into this process's address space
     segment = static_cast<Segmento*>(mmap(NULL, shm_size, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0));
     if (segment == MAP_FAILED) {
-        perror("mmap failed");
+        perror("Error al realizar el mapeo del segmento");
         exit(1);
     }
 
@@ -52,13 +50,12 @@ Escritor::~Escritor()
     delete ui;
 
     if (munmap(segment, shm_size) == -1) {
-        perror("munmap");
+        perror("Error en el Mapeo");
         exit(1);
     }
 
-    // Unlink shared memory object
     if (shm_unlink(shm_name) == -1) {
-        perror("shm_unlink");
+        perror("Error en el unlink");
         exit(1);
     }
 

@@ -1,8 +1,9 @@
 #include "lector.h"
 #include "ui_lector.h"
+#include <qstring.h>
 #include <QMessageBox>
-#include <iostream>
 #include <string>
+#include <cstring>
 #include <iostream>
 #include <QDebug>
 #include <sys/mman.h>
@@ -13,7 +14,6 @@
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
-
 using namespace std;
 
 Lector::Lector(QWidget *parent)
@@ -35,34 +35,24 @@ Lector::Lector(QWidget *parent)
    ui->tableWidget->clearContents();
    ui->tableWidget->setRowCount(0);
 
-   qDebug() << "PARTE 1 LA CORRE  ";
-
-  // Open shared memory object
   shm_fd = shm_open(shm_name, O_RDONLY, 0666);
   if (shm_fd == -1) {
-      perror("shm_open");
+      perror("Error al abrir el archivo de memia compartida");
       exit(1);
   }
 
-   qDebug() << "PARTE 2 LA CORRE  ";
-
-  // Map shared memory object into process address space
   segment = static_cast<Segmento*>(mmap(NULL, shm_size, PROT_READ, MAP_SHARED, shm_fd, 0));
   if (segment == MAP_FAILED) {
-      perror("mmap");
+      perror("Error al realizar el mapeo del segmento");
       exit(1);
   }
 
-   qDebug() << "PARTE 3 LA CORRE ";
-  //sem_init(&segment->mutex, 1, 1); // AQUI ME TRUENA
-  qDebug() << "PARTE 4 LA CORRE ";
+  //sem_init(&segment->mutex, 1, 1);
   //sem_init(&segment->sem_Lector, 1, 1);
-  qDebug() << "PARTE 5 LA CORRE ";
 
   for (int i = 0; i < segment->nTotal; i++)
   {
       if(segment->empleados[i].id >= 1){
-          // Update the table widget with the new data
           int fila;
           ui->tableWidget->insertRow(ui->tableWidget->rowCount());
           fila=ui->tableWidget->rowCount() - 1;
@@ -80,13 +70,12 @@ Lector::~Lector()
     delete ui;
 
     if (munmap(segment, shm_size) == -1) {
-        perror("munmap");
+        perror("Error en el Mapeo");
         exit(1);
     }
 
-    // Unlink shared memory object
     if (shm_unlink(shm_name) == -1) {
-        perror("shm_unlink");
+        perror("Error en el unlink");
         exit(1);
     }
 
@@ -188,15 +177,11 @@ void Lector::on_pushButton_clicked()
         segment->nLector++;
         sem_post(&segment->sem_Lector);*/
 
-            // Resize the table widget to match the new data
-
-            // Update the table widget with the new data
             ui->tableWidget->clearContents();
             ui->tableWidget->setRowCount(0);
             for (int i = 0; i < segment->nTotal; i++)
             {
                 if(segment->empleados[i].id >= 1){
-                    // Update the table widget with the new data
                     int fila;
                     ui->tableWidget->insertRow(ui->tableWidget->rowCount());
                     fila=ui->tableWidget->rowCount() - 1;
@@ -207,6 +192,7 @@ void Lector::on_pushButton_clicked()
                 }
             }
         ui->txt_total->setText("");
+
         /*sem_wait(&segment->sem_Lector);
         segment->nLector--;
 

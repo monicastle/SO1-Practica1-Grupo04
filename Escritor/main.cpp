@@ -14,11 +14,6 @@
 
 using namespace std;
 
-//m_sharedMemory.setKey("MySharedMemory");
-//m_sharedMemory.create(sizeof(Segmento));
-
-//Segmento *segment = static_cast<Segmento*>(m_sharedMemory.data());
-
 empleado_tipo Generar_Empleado();
 
 int main(int argc, char *argv[])
